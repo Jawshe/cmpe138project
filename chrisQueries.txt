@@ -1,4 +1,6 @@
-//Query one, uses COUNT to count report_number (same as total reports) per products_brand_name (same as product name). This showed that the highest report 
+//Query one, uses COUNT to count report_number (same as total reports) per products_brand_name (same as product name). 
+//
+//This showed that the highest number of reports was for EXEMPTION 4, which is essentially an FDA code for a product that was censored for 
 
     SELECT COUNT(report_number) AS TotalReports, products_brand_name     #Selects number of individual report numbers and product names
     FROM 
