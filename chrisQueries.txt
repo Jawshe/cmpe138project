@@ -1,3 +1,6 @@
+//  Christopher Park 015073136
+//  Function: What is the most information I can gather on a censored product using database searches?
+//
 //  Query one, uses COUNT to count report_number (same as total reports) per products_brand_name (same as product name). 
 //
 //  8.31MB processed, 279ms elapsed, 215ms consumed
@@ -31,5 +34,27 @@ FROM
 GROUP BY
   products_brand_name                                                #Groups results by products
 ORDER BY
-  COUNT(report_number) DESC                                          #Orders results by number of results (descending)
+  TotalReports DESC                                          #Orders results by number of results (descending)
 LIMIT 20
+
+
+
+//  Query three, at this point I realized that I wasn't counting distinct report numbers for my query, heavily inflating my numbers.
+//  However, with this query, I narrow the search down to a product named EXEMPTION 4 in the cosmetics industry so I filtered my query to that
+//  sorted by reactions by total reports by unique report numbers.
+//
+//  16.86 MB processed, 466ms elapsed, 377ms consumed
+//  The results of this query shows that ovarian cancer is a large percent of reactions despite Johnson and Johnson baby powder being listed as a known cause
+
+SELECT COUNT(DISTINCT report_number) AS TotalReports,       #Creates TotalReports, a COUNT for each reaction
+  reactions                                                 #outcomes is included in SELECT
+FROM 
+  bigquery-public-data.fda_food.food_events        
+WHERE
+  products_brand_name = "EXEMPTION 4" AND                   #WHERE statement used to only entries with EXEMPTION 4 as product name
+  products_industry_code = "53"                             #AND statement used to also add filter to only output cosmetic products
+GROUP BY
+  reactions                                                 #Groups total reports by reactions
+ORDER BY
+  TotalReports DESC                                         #Sorts reactions into descinding number of total reports
+LIMIT 20                                                    #Left at 20 just to see how google cloud handles declaring a limit higher than needed (13)
