@@ -1,7 +1,7 @@
 //Query one, uses COUNT to count report_number (same as total reports) per products_brand_name (same as product name). 
 //
 //This showed EXEMPTION 4 had 64133 reports while a Johnson and Johnson baby powder found to have caused cancer came in second
-//with 1741 reports. At this point, I realized I wanted to change the scope of my 
+//with 1741 reports. At this point, I realized I wanted to change the scope of my query.
 
 SELECT COUNT(report_number) AS TotalReports, products_brand_name   #Selects number of individual report numbers and product names
 FROM 
