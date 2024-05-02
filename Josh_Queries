@@ -1,0 +1,44 @@
+WITH RankedOutcomes AS (
+    SELECT
+        report_number,
+        reactions,
+        outcomes,
+        products_brand_name,
+        products_industry_code,
+        products_industry_name,
+        date_created,
+        date_started,
+        products_role,
+        consumer_age,
+        consumer_gender,
+        ROW_NUMBER() OVER (PARTITION BY outcomes ORDER BY report_number) AS row_num
+    FROM
+        `bigquery-public-data.fda_food.food_events`
+    WHERE
+        outcomes IN ('Hospitalization', 'Visited Emergency Room', 'Disability', 'Other Serious or Important Medical Event', 'Other Outcome', 'Death', 'Life Threatening')
+)
+SELECT
+    report_number,
+    reactions,
+    outcomes,
+    products_brand_name,
+    products_industry_code,
+    products_industry_name,
+    date_created,
+    date_started,
+    products_role,
+    consumer_age,
+    consumer_gender
+FROM
+    RankedOutcomes
+WHERE row_num <= 20
+ORDER BY
+    CASE
+        WHEN outcomes = 'Death' THEN 1
+        WHEN outcomes = 'Life Threatening' THEN 2
+        WHEN outcomes = 'Hospitalization' THEN 3
+        WHEN outcomes = 'Disability' THEN 4
+        WHEN outcomes = 'Visited Emergency Room' THEN 5
+        WHEN outcomes = 'Other Serious or Important Medical Event' THEN 6
+        WHEN outcomes = 'Other Outcome' THEN 7
+    END ASC;
