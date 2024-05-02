@@ -1,5 +1,6 @@
 //  Query one, uses COUNT to count report_number (same as total reports) per products_brand_name (same as product name). 
 //
+//  8.31MB processed, 279ms elapsed, 215ms consumed
 //  This showed EXEMPTION 4 had 64133 reports while a Johnson and Johnson baby powder found to have caused cancer came in second
 //  with 1741 reports. At this point, I realized I wanted to change the scope of my query.
 
@@ -13,4 +14,22 @@ GROUP BY
     products_brand_name                                                #Groups results by products
 ORDER BY
     COUNT(report_number) DESC                                          #Orders results by number of results (descending)
+LIMIT 20
+
+
+
+//  Query two, same query as before but without WHERE statement only showing beauty industry products to ensure EXEMPTION 4 has 
+//  the highest report number in all industries covered by the FDA
+//
+//  7.52MB processed, 456ms elapsed, 421ms consumed (Less processed, higher times)
+//  No noticable change in resulting outputs or graph. Further research into EXEMPTION 4 shows that is an exemption from the Freedom of Information
+//  Act (FOIA).
+
+SELECT COUNT(report_number) AS TotalReports, products_brand_name     #Selects number of individual report numbers and product names
+FROM 
+  bigquery-public-data.fda_food.food_events                          #Only displays outputs with industry product code for cometics
+GROUP BY
+  products_brand_name                                                #Groups results by products
+ORDER BY
+  COUNT(report_number) DESC                                          #Orders results by number of results (descending)
 LIMIT 20
