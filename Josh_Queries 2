@@ -1,0 +1,19 @@
+WITH OutcomePercentages AS (
+    SELECT
+        products_industry_name,
+        COUNT(*) AS total_cases,
+        SUM(CASE WHEN outcomes IN ('Death', 'Life Threatening', 'Hospitalization', 'Disability') THEN 1 ELSE 0 END) AS dangerously_ranked_cases,
+        SUM(CASE WHEN outcomes IN ('Visited Emergency Room', 'Other Outcome', 'Visited Emergency Room') THEN 1 ELSE 0 END) AS less_dangerously_ranked_cases
+    FROM
+        `bigquery-public-data.fda_food.food_events`
+    GROUP BY
+        products_industry_name
+)
+SELECT
+    products_industry_name,
+    ROUND((dangerously_ranked_cases / total_cases) * 100, 2) AS percentage_dangerous_outcomes,
+    ROUND((less_dangerously_ranked_cases / total_cases) * 100, 2) AS percentage_less_dangerous_outcomes
+FROM
+    OutcomePercentages
+ORDER BY
+    percentage_dangerous_outcomes DESC, percentage_less_dangerous_outcomes ASC;
