@@ -3,13 +3,14 @@
 //  This showed EXEMPTION 4 had 64133 reports while a Johnson and Johnson baby powder found to have caused cancer came in second
 //  with 1741 reports. At this point, I realized I wanted to change the scope of my query.
 
-SELECT COUNT(report_number) AS TotalReports, products_brand_name   #Selects number of individual report numbers and product names
+SELECT COUNT(report_number) AS TotalReports,
+    products_brand_name   #Selects number of individual report numbers and product names
 FROM 
-bigquery-public-data.fda_food.food_events                          
+    bigquery-public-data.fda_food.food_events                          
 WHERE
-products_industry_code = "53"                                      #Only displays outputs with industry product code for cosmetics
+    products_industry_code = "53"                                      #Only displays outputs with industry product code for cosmetics
 GROUP BY
-products_brand_name                                                #Groups results by products
+    products_brand_name                                                #Groups results by products
 ORDER BY
-COUNT(report_number) DESC                                          #Orders results by number of results (descending)
+    COUNT(report_number) DESC                                          #Orders results by number of results (descending)
 LIMIT 20
