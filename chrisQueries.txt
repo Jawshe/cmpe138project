@@ -56,5 +56,5 @@ WHERE
 GROUP BY
   reactions                                                 #Groups total reports by reactions
 ORDER BY
-  TotalReports DESC                                         #Sorts reactions into descinding number of total reports
+  TotalReports DESC                                         #Sorts reactions into descending number of total reports
 LIMIT 20                                                    #Left at 20 just to see how google cloud handles declaring a limit higher than needed (13)
