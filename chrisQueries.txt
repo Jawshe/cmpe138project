@@ -15,20 +15,33 @@ ORDER BY
   TotalReports DESC                                                  #Orders results by number of results (descending)
 LIMIT 20
 
+//  Query two, selects the date_started variable and counts the number of reports for that day created for a specific product.
+//  Output can be used to create a bar graph showing cases per day.
 
+SELECT
+  date_started,                                                      #Selects date_started
+  COUNT(*) AS TotalReports                                           #Counts number of reports for each date_started
+FROM
+  bigquery-public-data.fda_food.food_events
+WHERE
+  products_brand_name = 'JOHNSONS POWDER NO UPC'                     #Limits search to one product, can be changed to change product being searched
+GROUP BY
+  date_started
+ORDER BY
+  date_started
 
-//  Query two, selects the year and month for each report for a given item and extracts the month and year.
+//  Query three, selects the year and month for each report for a given item and extracts the month and year. 
 //  Then, a count is started for each month+year combination that counts the number of reports per month
+//  The reason EXTRACT was used was to create a separate entry for the YEAR to count cases per year instead of per day.
 
 SELECT
   EXTRACT(YEAR FROM date_started) AS Year,                           #Select the year from date_started (When food related event began, not report date)
-  EXTRACT(MONTH FROM date_started) AS Month,                         #Same as above but for month 
   COUNT(*) AS TotalReports                                           #Counts number of reports for each month and year combo
 FROM
   bigquery-public-data.fda_food.food_events
 WHERE
   products_brand_name = 'JOHNSONS POWDER NO UPC'                     #Limits search to one product, can be changed to change product being searched
 GROUP BY
-  Year, Month
+  Year
 ORDER BY
-  Year, Month;
+  Year;
