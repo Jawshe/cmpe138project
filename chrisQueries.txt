@@ -23,7 +23,7 @@ LIMIT 20
 SELECT
   EXTRACT(YEAR FROM date_started) AS Year,                           #Select the year from date_started (When food related event began, not report date)
   EXTRACT(MONTH FROM date_started) AS Month,                         #Same as above but for month 
-  COUNT(*) AS num_reports                                            #Counts number of reports for each month and year combo
+  COUNT(*) AS TotalReports                                           #Counts number of reports for each month and year combo
 FROM
   bigquery-public-data.fda_food.food_events
 WHERE
